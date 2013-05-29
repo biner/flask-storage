@@ -1,4 +1,12 @@
-from .amazon import S3BotoStorage, S3BotoStorageFile
+try:
+    from .amazon import S3BotoStorage, S3BotoStorageFile
+except Exception, e:
+    from .filesystem import FileSystemStorage as S3BotoStorage
+    from .filesystem import FileSystemStorageFile as S3BotoStorageFile
+    
+
+from .sina import SaeStorage, SaeStorageFile
+from .aliyun import AliyunStorage, AliyunStorageFile
 from .cloudfiles import CloudFilesStorage, CloudFilesStorageFile
 from .filesystem import FileSystemStorage, FileSystemStorageFile
 from .mock import MockStorage, MockStorageFile
@@ -24,6 +32,10 @@ __all__ = (
     PermissionError,
     S3BotoStorage,
     S3BotoStorageFile,
+    SaeStorage,
+    SaeStorageFile,
+    AliyunStorage,
+    AliyunStorageFile,
     Storage,
     StorageException,
     StorageFile,
@@ -35,6 +47,8 @@ __all__ = (
 
 STORAGE_DRIVERS = {
     'amazon': S3BotoStorage,
+    'sae': SaeStorage,
+    'aliyun': AliyunStorage,
     'cloudfiles': CloudFilesStorage,
     'filesystem': FileSystemStorage,
     'mock': MockStorage
