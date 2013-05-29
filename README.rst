@@ -6,9 +6,6 @@ Flask upload and storage extensions.
 
 Confirgure
 --------
-
-app.py
------
     # local 配置
     app.config['UPLOADS_FOLDER'] = os.path.dirname(__file__)+'/static/'
     app.config['FILE_SYSTEM_STORAGE_FILE_VIEW'] = 'static'
