@@ -1,4 +1,10 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
+"""
+    flask_storage.aliyun
+    ~~~~~~~~~~~~~
+
+    :copyright: (c) 2013 Huanghuibin@gmail.com
+"""
 from functools import wraps
 import mimetypes
 
@@ -10,10 +16,10 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
-
 import oss.oss_api
 import oss.oss_util
 import oss.oss_fs
+
 
 class AliyunStorage(Storage):
     
@@ -182,7 +188,6 @@ class AliyunStorage(Storage):
         name = self._normalize_name(self._clean_name(name))
         try:
             attr = self.get_object_attr(name)
-            print attr
             o = self.client.head_object(self.bucket, name).status
             if o == 200:
                 return True

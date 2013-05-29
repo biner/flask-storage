@@ -1,3 +1,10 @@
+# coding: utf-8
+"""
+    flask_storage.sina
+    ~~~~~~~~~~~~~
+
+    :copyright: (c) 2013 Huanghuibin@gmail.com
+"""
 from functools import wraps
 import mimetypes
 

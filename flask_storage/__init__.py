@@ -4,7 +4,7 @@ except Exception, e:
     from .filesystem import FileSystemStorage as S3BotoStorage
     from .filesystem import FileSystemStorageFile as S3BotoStorageFile
     
-
+from flask import current_app
 from .sina import SaeStorage, SaeStorageFile
 from .aliyun import AliyunStorage, AliyunStorageFile
 from .cloudfiles import CloudFilesStorage, CloudFilesStorageFile
@@ -14,7 +14,7 @@ from .base import (
     FileExistsError,
     FileNotFoundError,
     PermissionError,
-    Storage,
+    #Storage,
     StorageException,
     StorageFile
 )
@@ -36,7 +36,7 @@ __all__ = (
     SaeStorageFile,
     AliyunStorage,
     AliyunStorageFile,
-    Storage,
+    #Storage,
     StorageException,
     StorageFile,
     'STORAGE_DRIVERS',
@@ -55,12 +55,25 @@ STORAGE_DRIVERS = {
 }
 
 
-def get_default_storage_class(app):
-    return STORAGE_DRIVERS[app.config['DEFAULT_FILE_STORAGE']]
+def get_default_storage_class():
+    default = current_app.config.get('DEFAULT_FILE_STORAGE', 'filesystem')
+    return STORAGE_DRIVERS[default]
 
 
-def get_filesystem_storage_class(app):
-    if app.config['TESTING']:
+def get_filesystem_storage_class():
+    testing = current_app.config.get('DEFAULT_FILE_STORAGE', 'filesystem')
+    if testing:
         return MockStorage
     else:
         return FileSystemStorage
+
+# init the default storage
+def default_storage():
+    if not hasattr(current_app, 'extensions'):
+        current_app.extensions = {}
+    current_app.extensions.setdefault('storage', None)
+    if not current_app.extensions['storage']:
+        default_class = get_default_storage_class()
+        s= default_class()
+        current_app.extensions['storage'] = s
+    return current_app.extensions['storage']
